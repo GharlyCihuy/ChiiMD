@@ -5,6 +5,7 @@ import fs from 'fs';
 const handler = async (m, { conn, usedPrefix: _p, isOwner, __dirname, args }) => {
   const allTags = {
   main: 'Main Menu',
+  ai: 'Ai Menu',
   downloader: 'Downloader Menu',
   database: 'Database Menu',
   sticker: 'Sticker Menu',
@@ -27,6 +28,7 @@ tags = teks === 'all'
   : Object.fromEntries(Object.entries(allTags).filter(([k, v]) => k === teks || v.toLowerCase().includes(teks)))
 
   if (!isOwner) delete tags.owner;
+  if (!m.isGroup) delete tags.group;
 
   const defaultMenu = {
     before: `
@@ -62,7 +64,6 @@ tags = teks === 'all'
       limit: p.limit ? '🄻' : '',
       premium: p.premium ? '🄿' : '',
       owner: p.owner ? '🄾' : '',
-      rowner: p.owner ? '🄾' : '',
       mods: p.mods ? '🄼' : '',
     }));
 
@@ -123,7 +124,7 @@ tags = teks === 'all'
         externalAdReply: {
           title: global.namebot,
           body: `${global.namebot} By ${global.author}`,
-          thumbnail: fs.readFileSync(global.pathResolve('./media/thumbnail.jpg')),
+          thumbnail: fs.readFileSync(global.pathResolve('../media/menu.jpg')),
           mediaType: 1,
           renderLargerThumbnail: true,
         },

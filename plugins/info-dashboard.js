@@ -12,7 +12,7 @@ let handler = async (m) => {
 
     conn.relayMessage(m.chat, {
         extendedTextMessage: {
-            text: 'g',
+            text: handlers,
             contextInfo: {
                 externalAdReply: {
                     title: 'D A S H B O A R D',
