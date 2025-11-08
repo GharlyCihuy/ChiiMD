@@ -18,16 +18,17 @@ export async function handler(chatUpdate) {
     this.pushMessage(chatUpdate.messages).catch(console.error)
     let m = chatUpdate.messages[chatUpdate.messages.length - 1]
     if (!m) return
-    if (global.db.data == null)
-        await global.loadDatabase()
+    if (global.db.data == null) await global.loadDatabase()
     try {
         m = smsg(this, m) || m
         if (!m) return
         m.exp = 0
         m.limit = false
+
+        if (m.sender.endsWith('@broadcast') || m.sender.endsWith('@newsletter')) return
         await (await import(`./lib/database.js?v=${Date.now()}`)).default(m, this)
-        if (typeof m.text !== 'string')
-            m.text = ''
+
+        if (typeof m.text !== 'string') m.text = ''
 
         const isROwner = [conn.decodeJid(global.conn.user.id), ...global.owner.map(([number]) => number)].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
         const isOwner = isROwner || m.fromMe
@@ -52,10 +53,8 @@ export async function handler(chatUpdate) {
         const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), './plugins')
         for (let name in global.plugins) {
             let plugin = global.plugins[name]
-            if (!plugin)
-                continue
-            if (plugin.disabled)
-                continue
+            if (!plugin) continue
+            if (plugin.disabled) continue
             const __filename = path.join(___dirname, name)
             if (typeof plugin.all === 'function') {
                 try {
@@ -134,16 +133,13 @@ export async function handler(chatUpdate) {
                             plugin.command === command :
                             false
 
-                if (!isAccept)
-                    continue
+                if (!isAccept) continue
                 m.plugin = name
                 if (m.chat in global.db.data.chats || m.sender in global.db.data.users) {
                     let chat = global.db.data.chats[m.chat]
                     let user = global.db.data.users[m.sender]
-                    if (name != 'owner-unbanchat.js' && name != 'owner-exec.js' && name != 'owner-exec2.js' && name != 'tools-delete.js' && chat?.isBanned)
-                        return // Except this
-                    if (name != 'owner-unbanuser.js' && user?.banned)
-                        return
+                    if (name != 'owner-unbanchat.js' && name != 'owner-exec.js' && name != 'owner-exec2.js' && name != 'tools-delete.js' && chat?.isBanned) return // Except this
+                    if (name != 'owner-unbanuser.js' && user?.banned) return
                 }
                 if (plugin.rowner && plugin.owner && !(isROwner || isOwner)) { // Both Owner
                     fail('owner', m, this)

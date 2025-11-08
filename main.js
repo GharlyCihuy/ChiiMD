@@ -78,7 +78,7 @@ const connectionOptions = ({
 
 global.conn = makeWASocket(connectionOptions)
 
-if(!conn.authState.creds.registered) {
+if (!conn.authState.creds.registered) {
   console.log(chalk.bgWhite(chalk.blue('Generating code...')))
   setTimeout(async () => {
     let code = await conn.requestPairingCode(global.pairingNumber)
@@ -87,9 +87,9 @@ if(!conn.authState.creds.registered) {
   }, 3000)
 }
 
-if(global.db) {
+if (global.db) {
    setInterval(async () => {
-    if(global.db.data) {
+    if (global.db.data) {
     await global.db.write().catch(console.error);
     }
     if ((global.support || {}).find) {
@@ -99,7 +99,7 @@ if(global.db) {
   }, 2000);
 }
 
-if(fs.existsSync('./sessions/creds.json') && !conn.authState.creds.registered) {
+if (fs.existsSync('./sessions/creds.json') && !conn.authState.creds.registered) {
   console.log(chalk.yellow('-- WARNING: creds.json is broken, please delete it first --'));
   process.exit(0);
 }

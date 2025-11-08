@@ -6,7 +6,7 @@ let handler = async (m, { usedPrefix, command, text }) => {
         const dl = await ytdlp('audio', text);
         const info = await getMetadata(text);
         const sthumb = await conn.sendMessage(m.chat, {
-            text: `– 乂 *YouTube - Audio*\n> *- Judul :* ${info.title}\n> *- Channel :* ${info.channelTitle}\n> *- Upload Date :* ${new Date(info.publishedAt).toLocaleString()}\n> *- Durasi :* ${info.duration}\n> *- Views :* ${info.viewCount}\n> *- Likes :* ${info.likeCount}\n> *- Description :* ${info.description}`,
+            text: `– 乂 *YouTube - Video*\n> *- Judul :* ${info.title}\n> *- Channel :* ${info.channelTitle}\n> *- Upload Date :* ${new Date(info.publishedAt).toLocaleString()}\n> *- Durasi :* ${info.duration}\n> *- Views :* ${info.viewCount}\n> *- Likes :* ${info.likeCount}\n> *- Description :* ${info.description}`,
             contextInfo: {
                 externalAdReply: {
                     title: info.title,

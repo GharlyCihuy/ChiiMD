@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 let handler = async (m, { usedPrefix, command, text }) => {
-    if (!text) throw `Usage: ${usedPrefix + command} <YouTube Video URL>`
+    if (!text) throw `Usage: ${usedPrefix + command} <YouTube Audio URL>`
     try {
         const dl = await ytdlp('audio', text);
         const info = await getMetadata(text);
